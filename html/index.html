@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CoinSurf Chat</title>
+</head>
+<body>
+<ul id="response"></ul>
+<form id="form" action="">
+    <button>Send</button>
+</form>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+<script async>
+    let form, response;
+
+    /**
+     * 엘리멘트 초기화
+     */
+    const initElement = () => {
+        form = document.getElementById('form');
+        response = document.getElementById('response');
+    };
+
+    const addEventListener = () => {
+        form.addEventListener('submit', async e => {
+            e.preventDefault();
+
+            const result = await axios.get(
+                'https://nth-circlet-279401.du.r.appspot.com/',
+                {
+                    headers: {
+                        'authorization': 'example-key',
+                        'x-cloudscheduler': 'true'
+                    }
+                }
+            );
+
+            response.innerHTML = result.data.message;
+        });
+    };
+
+    initElement();
+    addEventListener();
+
+</script>
+</body>
+</html>
