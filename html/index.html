@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>CoinSurf Chat</title>
+    <title>Secure API call with Cloud Scheduler</title>
 </head>
 <body>
 <ul id="response"></ul>
@@ -12,9 +12,6 @@
 <script async>
     let form, response;
 
-    /**
-     * 엘리멘트 초기화
-     */
     const initElement = () => {
         form = document.getElementById('form');
         response = document.getElementById('response');
@@ -25,7 +22,7 @@
             e.preventDefault();
 
             const result = await axios.get(
-                'https://nth-circlet-279401.du.r.appspot.com/',
+                'https://', // Fill your URL
                 {
                     headers: {
                         'authorization': 'example-key',

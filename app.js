@@ -1,24 +1,14 @@
-// Copyright 2017 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 'use strict';
 
-// [START gae_node_request_example]
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
 
+/**
+ * Get JWT from authorization Header
+ * @param authorization
+ * @return {*|string}
+ */
 const getJwt = (authorization) => {
   if (typeof authorization !== 'undefined') {
     let jwt = authorization.split(' ');
@@ -33,6 +23,12 @@ const getJwt = (authorization) => {
   }
 };
 
+/**
+ * Verify JWT with Google API
+ * @param req
+ * @param res
+ * @param next
+ */
 const verifyJwt = (req, res, next) => {
   try {
     const authorization = req.headers.authorization;
@@ -42,6 +38,7 @@ const verifyJwt = (req, res, next) => {
     axios.get(`https://oauth2.googleapis.com/tokeninfo?id_token=${jwt}`)
         .then(result => {
           const payload = result.data;
+          // I check 'iss' for 2-level security. But, it is not necessary.
           if(payload.iss && payload.iss === 'https://accounts.google.com') {
             req.headers['jwt-payload'] = payload;
             next();
